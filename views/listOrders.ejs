@@ -1,0 +1,234 @@
+<%- include('partials/header') %>
+
+<div class="container push-top col-12">
+	<div class="row">
+		 <a href="javascript:history.back()" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+	<div id="map" style="height:500px"></div>
+	</div>
+
+</div>
+
+	
+<div class="container top-border">
+	<div class="row">
+	<% if (routes.length === 0 && orders[0]) { %>
+	<div class="col-12 top-border white-background">
+	<h1 class="pmd-display2"><%= orders[0].deliveryDateString %></h1>
+		<div class="btn-group">
+			<button data-target="#routeModal" data-toggle="modal" class="btn pmd-ripple-effect btn-primary" type="button">Split Group</button>
+		</div>
+	</div>
+	<% } else { %>
+	<div class="col-12 top-border white-background">
+	<h1 class="pmd-display2"><%= moment(params.date).format("dddd, MMMM Do YYYY") %></h1>
+		<div class="btn-group">
+			<a href="sortByDate=<%= params.date %>-routeId=none" class="btn pmd-ripple-effect btn-primary" type="button">All Orders</a>
+			<a href="sortByDate=<%= params.date %>-routeId=unassigned" class="btn pmd-ripple-effect btn-primary" type="button">Default Route</a>
+			<% routes.forEach(function(route) { %>
+				<a href="sortByDate=<%= params.date %>-routeId=<%= route._id %>" class="btn pmd-ripple-effect btn-primary" type="button"><%= route.routeName %></a>
+			<% })%>
+
+		</div>
+		<div class="btn-group pull-right">
+			<button data-target="#routeModal" data-toggle="modal" class="btn pmd-ripple-effect btn-primary" type="button">Add Delivery Group</button>
+		</div>
+	</div>
+	<% } %>
+	</div>
+</div>
+
+<div class="container white-background pmd-z-depth">
+	<% if (orders.length == 0) { %>
+	
+		<h1>No Orders</h1>
+	
+	<% } else { %>
+
+	<div class="row">
+		<div class="col col-md-4 white-background">
+			<h2 class="pmd-display1">Info</h2>
+			<ul class="list-group pmd-list">
+				<li class="list-group-item">Number of Stops: <%= orders.length %> </li>
+			</ul>
+			<a href="/printer_sortByDate=<%= params.date %>-routeId=<%= params.routeId %>" class="btn btn-primary">Print Friendly</a>
+			<h2 class="pmd-display1">Total Items</h2>
+			<ul class="list-group pmd-list">
+				<% itemsInOrder.forEach(function(el){ %>
+				 	<li class="list-group-item"><%= el.beerName %>  <%= el.size %>: <%= el.onOrder %></li>
+				<% }) %>
+			</ul>
+		</div>
+
+		<div class="col col-md-8 white-background">
+			<ul class="list-group pmd-z-depth pmd-list pmd-card-list">
+				<% orders.forEach(function(el) { %>
+					<li class="list-group-item">
+					        <div class="media-left">
+					            <a href="/edit_itemToEdit=<%= el._id %>" class="avatar-list-img">
+					                <% if (el.delivered === true) { %>
+									<i class="material-icons pmd-sm">done</i>
+			            		<% } else { %>
+									<i class="material-icons" style="width: 30px;">error outline</i>
+			            		<% } %>
+					            </a>
+					        </div>
+					        <div class="media-body" style="max-width: 400px;">
+					            <h3 class="list-group-item-heading"><a href="/edit_itemToEdit=<%= el._id %>"><%= el.account.name %></a></h3>
+				        		<% el.order.forEach(function(order) { %>
+									<span class="list-group-item-text"><a href="/edit_itemToEdit=<%= el._id %>">(<%= order.orderSize %>) <%= order.item.name %> <%= order.item.size %></a></span>
+				        		<% }) %>
+					        	<% if (el.note.length > 0) { %>
+									<span class="list-group-item-text"><a href="/edit_itemToEdit=<%= el._id %>"><%= el.note %></a></span>
+								<% } %>
+					        </div>
+					        <span class="dropdown pmd-dropdown media-right clearfix">
+							    <button class="btn pmd-ripple-effect btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true"><span class="caret"></span></button>
+							    <ul aria-labelledby="dropdownMenu2" role="menu" class="dropdown-menu dropdown-menu-right">
+				        			<li role="presentation"><a href="/delivered/<%= el._id %>">Delivered</a></li>
+				        			<li><a data-target="#modal_<%= el._id %>" data-toggle="modal" class="" type="button">Change Delivery Date</a></li>
+				        			<li><a href="/delete/<%= el._id %>" class="">Delete Order</a></li>
+				        			<li><a data-target="#changeRouteModal" data-toggle="modal" class="" type="button">Update Route</a></li>
+				        		</ul>
+							</span>
+
+				        	<div tabindex="-1" class="modal fade" id="modal_<%= el._id %>" style="display: none;" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header pmd-modal-bordered">
+											<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+											<h2 class="pmd-card-title-text">Change Delivery Date</h2>
+										</div>
+										<div class="modal-body">
+										<form id="updateDate" class="" action="/update_date" method="post">
+											<input type="hidden" name="orderItemId" value="<%= el._id %>">
+											<p><%= el.account.name %>Delivery date: <%= el.deliveryDateString %></p>
+
+											<input class="form-control" value="<%= el.deliveryDateString %>" type="date" name="deliveryDate" required>
+											</div>
+											<div class="pmd-modal-action">
+											
+											<button type="submit" class="btn">Change Delivery Date</button>
+										</form>
+										<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div tabindex="-1" class="modal fade" id="changeRouteModal" style="display: none;" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header pmd-modal-bordered">
+											<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+											<h2 class="pmd-card-title-text">Change Route</h2>
+										</div>
+										<div class="modal-body">
+										<form id="updateDate" class="" action="/assignRoute" method="post">
+											<input type="hidden" name="orderItemId" value="<%= el._id %>">
+											<p>Delivery date: <%= el.deliveryDateString %></p>
+
+											<select class="selectpicker" name="route">
+												<option value="<%= el._id %> none">None</option>
+												<% routes.forEach(function(route){ %>
+		 						  					<option value="<%= el._id %> <%= route._id %>"><%= route.routeName %></option>
+												<% }) %>	
+											</select>
+										</div>
+										<div class="pmd-modal-action">
+											<button type="submit" class="btn">Change Route</button>
+										</form>
+										<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+										</div>
+									</div>
+								</div>
+							</div>
+					</li>
+				<% }) %>
+			</ul>
+			</form>
+		</div>
+	</div>
+	
+	<% } %>
+
+</div>
+
+</div>
+
+<div tabindex="-1" class="modal fade" id="routeModal" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header pmd-modal-bordered">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+				<h2 class="pmd-card-title-text">Add Delivery Group</h2>
+			</div>
+			<div class="modal-body">
+			<form id="theId" class="" action="/newRoute" method="post">
+			    <div class="form-group">
+			        <div class="form-input-box">
+			            <input class="form-control" name="routeName" type="text" placeholder="Name the Route">
+			            <input class="form-control" name="routeDate" type="hidden" value="<%= params.date %>" placeholder="Date">
+			            <input class="form-control" name="routeCreatedBy" type="hidden" value="<%= user._id %>">
+			        </div>
+				</div>
+			</div>
+			<div class="pmd-modal-action">
+					<button type="submit" class="btn pmd-ripple-effect btn-primary">Submit</button>
+			</form>
+				<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<%- include('partials/floating-buttons'); %>
+
+<div class="push-bottom"></div>
+
+<script>
+  var map;
+  var orderArr = <%- JSON.stringify(orders) %>
+  var myLatLngStart = { lat: 33.727299, lng: -118.2824077 } //Brouwerij West
+
+  function initMap() {
+ 	// console.log(document)
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: myLatLngStart,
+      scrollwheel: false,
+      zoom: 9
+    });
+  		
+	orderArr.forEach(function(el){
+		var myLatLng = {lat: el.account.lat, lng: el.account.lng},
+			accountName = el.account.name
+		var marker = new google.maps.Marker({
+			position: myLatLng,
+			map: map,
+		})
+		var infowindow = new google.maps.InfoWindow({
+          content: accountName
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+    })
+
+ }
+
+</script>
+
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<script 
+  type="text/javascript" 
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="javascripts/propeller.min.js"></script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9geBohhZ3DehycMZEBqiZmo6qfDu9dEs&callback=initMap"></script>
+	</body>
+</html>

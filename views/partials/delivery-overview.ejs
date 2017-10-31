@@ -1,0 +1,45 @@
+<div class="container dashboard pmd-z-depth">
+	<h2 class="pmd-display1">Upcoming Deliveries</h2>
+		<table cellspacing="0" cellpadding="0" class="table" id="table-propeller">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Total Orders</th>
+				<th>Routes</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<% overdueOrders.forEach(function(el) { %>
+			<tr>
+				<td class="table-danger"><a  href="sortByDate=<%= el.deliveryDate %>-routeId=unassigned" class="">Expected Delivery: <%= el.deliveryDateString %></a></td>
+				<td class="table-danger"><a  href="/edit_itemToEdit=<%= el._id %>" class=""><%= el.account.name %></a></td>
+				<td class="table-danger"><a  href="sortByDate=<%= el.deliveryDate %>-routeId=unassigned" class="">View Route</a></td>
+			</tr>
+			<% }) %>
+			
+			<% for (var i = 0; i < routeObj.length; i++) { %>
+			<% if(routeObj[i].empty === false) { %>
+				<tr>
+					<td><a  href="sortByDate=<%= routeObj[i].dateForRoute %>-routeId=unassigned" class=""><%= routeObj[i].dateForDisplay %></a></td>
+					<td><a  href="sortByDate=<%= routeObj[i].dateForRoute %>-routeId=unassigned" class=""><%= routeObj[i].totalOrders %></a></td>
+					<td>
+					<% if (routeObj[i].routes.length == 0 && routeObj[i].unassigned.length == 0) { %>
+						 --- 
+					<% } else { %>
+						<a  href="sortByDate=<%= routeObj[i].dateForRoute %>-routeId=unassigned" class=""><strong>Daily Dashboard</strong></a>
+					<% } %>
+					</td>
+				</tr>
+			<% } %>
+			<% } %>
+			
+		</tbody>
+		</table>
+</div>
+
+
+
+
+
+

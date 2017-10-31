@@ -1,0 +1,47 @@
+<%- include('partials/header') %>
+
+<div class="container push-top">
+    <a href="javascript:history.back()" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+    <div class="pmd-card top-border pmd-z-depth">
+
+        <div class="form-group pmd-textfield col pmd-z-depth-2 white-background">
+            <h1 class="pmd-display2 order-display1">Order</h1>
+            <form id="theId" class="" action="/order" method="post">
+                <div class="form-group form-input-box">
+                    <h3 for="exampleSelect1" class="col-2 control-label col-form-label">Account</h3>
+                    <select class="form-control" id="accountId" name="accountId">
+                        <% accounts.forEach(function(el) { %>
+                            <option value="<%= el._id %>"><%= el.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="form-group form-input-box">
+                        <h3 class="col-2 col-form-label">Delivery Date</h3>
+                        <input class="form-control" type="date" name="deliveryDate" required>
+                </div>
+                <div class="form-group form-input-box">
+                    <h3 class="col-2 col-form-label">Note</h3>
+                    <textarea class="form-control" name="note" type="text" placeholder=""></textarea> 
+                </div>
+                    <h2 class="order-display1 pmd-display2">Available Beer</h2>
+                    <div class="form-group form-input-box col-2 justify-content-md-center">          
+                        <% currentInventory.forEach(function(el) { %>
+                        <% if (el.currentInventory > 0) { %>
+                            <input type="hidden" name="order" value="<%= el.beerId %>">
+                            <h3 class="col-2 col-form-label"><%= el.beerName %> <%= el.size %></h3>
+
+                        <h4>In Stock: <%= el.leftToSell %></h4>
+                            <input class="form-control" type="text" id="order_<%= el.name %>" name="order" placeholder="<%= el.name %>" value="0"><br />
+                        <% } %>
+                        <% }) %>
+                    </div>    
+
+       
+                <button type="submit" class="btn pmd-btn-raised btn-primary btn-block pmd-ripple-effect">Submit</button>
+                
+            </form>
+        </div>
+    </div>
+</div>
+    <div class="col col-2"></div>
+<%- include('partials/footer') %>

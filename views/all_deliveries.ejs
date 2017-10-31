@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+		<title>Delivbeer Beta</title>
+		<meta name="description" content="">
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<meta property="og:image" content="path/to/image.jpg">
+		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png">
+
+		<!-- Bootstrap Css -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+		<!-- Google Font -->
+		 <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<!-- Propellar Css -->
+	    <link href="../stylesheets/propeller.min.css" rel="stylesheet">
+
+		<!-- Custom Css -->
+		<link href="../stylesheets/style.css" rel="stylesheet">
+
+		<!-- Chrome, Firefox OS and Opera -->
+		<meta name="theme-color" content="#000">
+		<!-- Windows Phone -->
+		<meta name="msapplication-navbutton-color" content="#000">
+		<!-- iOS Safari -->
+		<meta name="apple-mobile-web-app-status-bar-style" content="#000">
+
+	</head>
+
+	<body>
+	<div class="container-fluid">
+		<% if (user) { %>
+			<%- include('partials/navbar', {user: user}); %>
+		<% } %>
+	</div>
+
+
+	<div class="container push-top">
+		<div class="pmd-card pmd-z-depth top-border">
+			<div class="pmd-card-title">
+        		<h2 class="pmd-card-title-text">All Scheduled Deliveries</h2>
+        		<span class="pmd-card-subtitle-text"></span>
+
+    		</div>
+    		<div class="pmd-card-body">
+    			<table id="example" class="table pmd-table table-hover table-striped display responsive nowrap" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>Delivery Date</th>
+							<th>Account</th>
+							<th>Number of Units #</th>
+							<th>Delivered?</th>
+						</tr>
+					</thead>
+					<tbody>
+					<% deliveries.forEach(function(el){ %>
+						<% if (el.deliveryDate) { %>
+							<tr>
+								<td><%= moment(el.deliveryDate).format("ll") %></td>
+								<td></td>
+								<td></td>
+								<td>
+									<% if(el.delivered === true) { %>
+										<i class="material-icons pmd-sm" style="width: 30px;">done</i>
+									<% } else { %>
+										<i class="material-icons pmd-sm" style="width: 30px;">error outline</i>
+									<% } %>
+								</td>
+							</tr>
+						<% } %>
+					<% }) %>
+					</tbody>
+				</table>
+    		</div>
+		</div>
+	</div>
+
+<%- include('partials/footer-inventory') %>

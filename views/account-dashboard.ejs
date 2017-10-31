@@ -1,0 +1,66 @@
+<%- include('./partials/header-accounts') %>
+
+<div class="container push-top ">
+		<a href="javascript:history.back()" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+	<div class="pmd-card pmd-z-depth top-border">
+		
+		<h2 class="pmd-display2">Account Finder</h2>
+		<a href="/account/newaccount" class="btn pmd-ripple-effect btn-primary">Add New Account</a>
+		
+		<table id="example" class="table pmd-table table-hover table-striped display responsive nowrap" cellspacing="0" width="100%">
+			<thead>
+				<tr>
+					<th>Account</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			<% accounts.forEach(function(el){ %>
+				<tr>
+					<td data-title="Name"><a href="account-details_<%= el.name %>" class=""><%= el.name %></a></td>
+					<td data-title="Note">
+	
+					</td>
+					<td data-title="Edit">
+						<div class="btn-group">
+							<a href="account-details_<%= el.name %>" class="btn pmd-ripple-effect btn-primary">Edit Account</a>
+							<button data-target="#<%= el._id %>" data-toggle="modal" class="btn pmd-ripple-effect btn-primary" type="button">Add A Note</button>
+						</div>
+					</td>
+					
+					<div tabindex="-1" class="modal fade" id="<%= el._id %>" style="display: none;" aria-hidden="true">
+	
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header pmd-modal-bordered">
+									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+									<h2 class="pmd-card-title-text">Add Note</h2>
+								</div>
+								<div class="modal-body">
+									<form class="form-horizontal" action="/newNote" method="POST">
+										<div class="form-group pmd-textfield pmd-textfield-floating-label">
+											<label class="control-label">Message</label>
+											<textarea required name="note" type="text" class="form-control"></textarea>
+										</div>
+										<input type="hidden" name="id" value="<%= el._id %>">
+									
+								</div>
+								<div class="pmd-modal-action">
+								
+										<button type="submit" class="btn pmd-ripple-effect btn-primary">Submit</button>
+									</form>
+									<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</tr>
+			<% }) %>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<%- include('partials/footer-account') %>

@@ -1,0 +1,28 @@
+<%- include('./partials/header-accounts') %>
+
+<div class="container-fluid push-top">
+	<div class="form-box pmd-z-depth-2 top-border white-background">
+		<h1 class="pmd-display1">New Beer</h1>
+		<form class="" action="/newbeer" method="post">
+		    <fieldset>
+	        <div class="form-group">
+	            <label class="col-2 col-form-label">Name</label>
+	            <input name="name" type="text
+	            " class="form-control" placeholder="Name">
+	            <select name="size" class="form-control">
+                    <option>1/2bbl Keg</option>
+                    <option>1/6bbl Keg</option>
+                    <option>12/750mL</option>
+                    <option>24/4pk</option>
+                </select>
+	          	<label class="col-2 col-form-label">Starting Inventory</label>
+	            <input name="inventory" type="text" class="form-control" placeholder="">
+	        </div>
+        	<button type="submit" class="btn btn-primary">Submit</button>
+    		</fieldset>
+		</form>
+	</div>
+</div>
+
+
+<%- include('./partials/footer') %>

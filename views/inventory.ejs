@@ -1,0 +1,129 @@
+<%- include('./partials/header-accounts') %>
+
+<div class="container push-top">
+	<a href="javascript:history.back()" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+	<div class="pmd-card top-border pmd-z-depth">
+	<h1 class="pmd-display1">Adjust Inventory</h1>
+	
+	<a data-target="#modal" data-toggle="modal" class="btn btn-primary" type="button">Add New Beer</a>
+
+	<div class="table-responsive"> 
+		<table cellspacing="0" cellpadding="0" class="table pmd-table" id="table-propeller">
+			<thead>
+				<tr>
+					<th>Beer Name</th>
+					<th>Format</th>
+					<th>Inventory</th>
+					<th>Adjustment</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% inventory.forEach(function(el) { %>
+					<tr>
+						<td><a href="/inventory/<%= el.beerId %>"><%= el.beerName %></a></td>
+						<td><a href="/inventory/<%= el.beerId %>"><%= el.size %></a></td>
+						<td><a href="/inventory/<%= el.beerId %>"><%= el.currentInventory %></a></td>
+						<td>
+
+						<div class="btn-group">
+	            			<a data-target="#adjust_<%= el.beerId %>" data-toggle="modal" class="btn btn-primary" type="button">Adjust Inventory</a>
+	            			<a data-target="#modal_<%= el.beerId %>" data-toggle="modal" class="btn btn-primary" type="button">Edit</a>
+						</div>
+						
+						</td>
+					</tr>
+					<div tabindex="-1" class="modal fade" id="modal_<%= el.beerId %>" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header pmd-modal-bordered">
+									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+									<h2 class="pmd-card-title-text">Edit Beer</h2>
+								</div>
+								<div class="modal-body">
+									<form class="" action="/editbeer" method="post">
+								    	<fieldset>
+							        		<div class="form-group">
+									            <label class="col-2 col-form-label">Name</label>
+									            <input type="hidden" name="id" value="<%= el.beerId %>">
+									            <input name="name" type="text
+									            " class="form-control" value="<%= el.beerName %>" placeholder="<%= el.beerName %>">
+									            <label class="col-2 col-form-label">Active?</label>
+									            <select name="active" class="form-control" value="Chose">
+									            	<% if (el.active === true) { %>
+						                    		<option value=true selected>Yes</option>
+						                    		<option value=false>No</option>
+									            	<% } else { %>
+						                    		<option value=true>Yes</option>
+						                    		<option value=false selected>No</option>
+									            	<% } %>
+
+						                		</select>
+							        		</div>
+
+						        			<button type="submit" class="btn btn-primary">Submit</button>
+						        			<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+						    			</fieldset>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div tabindex="-1" class="modal fade" id="adjust_<%= el.beerId %>" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header pmd-modal-bordered">
+									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+									<h2 class="pmd-card-title-text">Adjust Inventory</h2>
+								</div>
+								<div class="modal-body">
+								<form class="" action="/update_inventory" method="post">
+									<input type="hidden" name="beerId" value="<%= el.beerId %>">
+			            			<input name="inventory" type="text" class="pmd-textfield  form-control" placeholder="+/-">
+		            				<button type="submit" class="btn btn-primary">Submit</button>
+								</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% }) %>
+			</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+
+<div tabindex="-1" class="modal fade" id="modal" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header pmd-modal-bordered">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+				<h2 class="pmd-card-title-text">Change Delivery Date</h2>
+			</div>
+			<div class="modal-body">
+				<form class="" action="/newbeer" method="post">
+			    	<fieldset>
+		        		<div class="form-group">
+				            <label class="col-2 col-form-label">Name</label>
+				            <input name="name" type="text
+				            " class="form-control" placeholder="Name">
+				            <select name="size" class="form-control">
+	                    		<option>1/2bbl Keg</option>
+	                    		<option>1/6bbl Keg</option>
+	                    		<option>12/750mL</option>
+	                    		<option>24/4pk</option>
+	                		</select>
+		          			<label class="col-2 col-form-label">Starting Inventory</label>
+		            		<input name="inventory" type="text" class="form-control" placeholder="">
+		        		</div>
+
+	        			<button type="submit" class="btn btn-primary">Submit</button>
+	        			<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+	    			</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<%- include('./partials/footer') %>

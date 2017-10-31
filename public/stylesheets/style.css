@@ -1,0 +1,216 @@
+/* Color  */
+a {
+    color: #68667B;
+}
+
+body {
+    background-color: #E7E9EB;
+}
+
+.container {
+}
+
+.push-top {
+  padding-top: 70px; 
+}
+
+.pmd-display1 {
+  
+}
+
+/* Helpers */
+
+.back-btn {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+}
+
+.push-bottom {
+  margin-top: 30px;
+}
+
+.push-sides {
+  padding: 0;
+}
+
+.top-border{
+  border-top: 5px solid #FF9F1C;
+}
+
+.top-background {
+  background-color: #E7E9EB;
+}
+
+.top-background {
+  background-color: #E7E9EB;
+}
+
+.white-background {
+  background-color: #FDFFFC;
+}
+
+.order-border{
+  border-left: 3px solid #2EC4B6;
+}
+
+.align-right {
+  align-items: right;
+}
+
+
+
+/* Landing Page */
+
+.test-border {
+    border: 1px solid black;
+}
+
+.appInfo {
+    position:absolute;
+    bottom:0;
+    right: 10px;
+}
+
+.login-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 0;
+    min-height: 100;
+}
+
+.login-shadowbox {
+    background-color: #FDFFFC;
+    padding: 30px 40px;
+}
+
+.login-form {
+  padding: 32px 0px;
+}
+
+.login-button {
+    padding: 10px 0;
+}
+
+/* NavBar */
+.navbar {
+  background-color: #FDFFFC;
+}
+
+.navbar-brand {
+  color: #182B3A;
+}
+
+/* Dashboard */
+.full-container {
+  padding: 10px;
+  background-size: cover;
+}
+
+.quick-stats {
+  min-height: 400px;
+}
+
+.future-info-cont {
+    padding: 43px;
+    margin: 10px 0;
+}
+
+.order-container {
+    width: 100%;
+    padding: 30px;
+    margin: 10px 0;
+}
+
+.order-individual {
+    width: 100%;
+    padding: 10px;}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.btn{
+    order: 1;
+}
+ /* Dashboard */
+
+ .dashboard {
+    background-color: #FDFFFC;
+    padding: 4px 12px;
+    border-top: 15px solid #FF9F1C;
+    margin-top: 15px;
+
+ }
+
+ .pmd-display1 {
+    opacity: 1;
+    margin-top: 5px;
+ }
+
+/* Forms */
+
+.form-box {
+    padding: 20px;
+    margin: 10px 35px;
+}
+
+.form-input-box {
+    padding: 0px 20px;
+}
+
+/* Order */
+.order-header {
+
+}
+
+.order-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.order-display1 {
+  padding: 0px 8px;
+  color: #011627;
+  opacity: .8;
+}
+
+.col-form-label {
+  color: #26A195;
+}
+
+/* Day Dashboard */
+
+/* Order */
+.namebox {
+  margin-bottom: 18px;
+}
+
+.namebox-details {
+  
+}
+
+/* Account Detail */
+.account-notes {
+
+}
+
+
+/* Order Reveal */
+
+.reveal-if-active {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+input[type="radio"]:checked ~ .reveal-if-active,
+input[type="checkbox"]:checked ~ .reveal-if-active {
+  opacity: 1;
+  max-height: 100px; /* little bit of a magic number :( */
+  overflow: visible;
+}

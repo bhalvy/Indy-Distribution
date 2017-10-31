@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+    	<div class="login-box">
+    		<div class="login-shadowbox pmd-z-depth-2">
+			
+			<div class="login-image">
+    			<img src="images/Profile.png" alt="">
+    		</div>
+        		<div class="login-form">
+
+
+
+        			<form action="/login" method="post">
+					    <div class="form-group pmd-textfield pmd-textfield">
+					        <label class="control-label">Username:</label>
+					        <input type="text" name="username" class="form-control" />
+					    </div>
+					    <div class="form-group pmd-textfield pmd-textfield">
+					        <label class="control-label">Password:</label>
+					        <input type="password" name="password" class="form-control"/>
+					    </div>
+					    <div>
+					        <input class="btn btn-block btn-primary pmd-btn-outline" type="submit" value="Log In"/>
+					    </div>
+					</form>
+		            	<a href="/signup" class=""><h5>Apply for Account</h5></a>
+	            </div>
+    		</div>
+    	</div>
+
+<%- include('partials/footer_not_logged_in') %>

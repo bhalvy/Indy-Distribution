@@ -1,0 +1,85 @@
+<%- include('partials/header-accounts') %>
+
+	<body>
+	<div class="container-fluid">
+		<% if (user) { %>
+			<%- include('partials/navbar', {user: user}); %>
+		<% } %>
+	</div>
+
+
+	<div class="container push-top">
+		<a href="javascript:history.back()" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+		<div class="pmd-card pmd-z-depth top-border">
+			<div class="pmd-card-title">
+        		<h2 class="pmd-card-title-text"><%= beer[0].name %> <%= beer[0].size %></h2>
+        		<h4 class="text-muted"><a href="/inventory">Adjust Inventory</a></h4>	
+		<div class="table-responsive"> 
+        		<span class="pmd-card-subtitle-text"></span>
+        	<div class="container-fluid">
+        		<% inventoryCount.forEach(function(count) { %>
+
+        			<% if (beer[0].name == count.beerName && beer[0].size == count.size) { %>
+        				<h3>Current Physical Inventory: <%= count.currentInventory %></h3>
+        				<h3>Undelivered: <%= count.soldButNotDelivered %></h3>
+        				<h3></h3>
+        			<% } %>
+        		<% }) %>
+        	</div>
+
+    		</div>
+    		<div class="pmd-card-body">
+    			<table id="example" class="table pmd-table table-hover table-striped display responsive nowrap" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Delivery Date</th>
+						<th>Account</th>
+						<th>Number of Units #</th>
+						<th>Delivered?</th>
+					</tr>
+				</thead>
+				<tbody>
+				<% inventory.forEach(function(el){ %>
+					<% if (el.deliveryDate && el.canceled === false) { %>
+						<tr>
+							<td><%= moment(el.deliveryDate).format("ll") %></td>
+							<td><a href="/edit_itemToEdit=<%= el._id %>" class="href"><%= el.account.name %></a></td>
+							<td><% el.order.forEach(function(order){ %>
+									<% if (beer[0].name == order.item.name) { %>
+										<%= order.orderSize * -1 %> 
+									<% } %>
+								<% }) %>
+							</td>
+							<td>
+								<% if(el.delivered === true) { %>
+									<i class="material-icons pmd-sm" style="width: 30px;">done</i>
+								<% } else { %>
+									<i class="material-icons pmd-sm" style="width: 30px;">error outline</i>
+								<% } %>
+							</td>
+						</tr>
+					<% } %>
+
+					<% if (el.unitNumber) { %>
+						<tr>
+							<td><%= moment(el.date).format("ll") %></td>
+							<% if (el.initialInventory) { %>
+								<td>Initial Inventory</td>
+								<td><%= el.unitNumber * 1 %></td>	
+							<% } else { %>
+								<td><%= el.note %><% if(!el.note) { %><strong>Manual Entry</strong><% } %></td>
+								<td><%= el.unitNumber * -1 %></td>						
+							<% } %>
+							<td>
+								<i class="material-icons pmd-sm" style="width: 30px;">done</i>
+							</td>
+						</tr>
+					<% } %>
+				<% }) %>
+				</tbody>
+			</table>
+    		</div>
+		</div>
+	</div>
+
+<%- include('partials/footer-inventory') %>

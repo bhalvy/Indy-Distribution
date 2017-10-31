@@ -1,0 +1,36 @@
+<div class="container pmd-z-depth">
+		<h2>Account Finder</h2>
+		<form id="submit" action="/account-details" method="post">
+			<input id="name" name="account" class="form-control" list="names" placeholder="Account Name" />
+			<datalist id="names">
+				<% accounts.forEach(function(el) { %>
+					<option value="<%= el.name %>"></option>
+				<% }) %>
+			</datalist>
+		</form>
+
+</div>
+
+<script>
+	var accounts = <%= JSON.stringify(accounts) %>;
+	var datalist = document.getElementById('names');
+
+	document.getElementById('name').addEventListener('keyup', function () {
+	    if (this.value.length === 0) {
+	        return;
+	    }
+
+	    // Send Ajax request and loop of its result
+
+	    datalist.textContent = '';
+	    for (var i = 0; i < datalist.length; i++) {
+	        if (datalist[i].indexOf(this.value) !== 0) {
+	            continue;
+	        }
+	        var option = document.createElement('option');
+	        option.value = datalist[i];
+	        datalist.appendChild(option);
+	    }
+	});
+
+</script>

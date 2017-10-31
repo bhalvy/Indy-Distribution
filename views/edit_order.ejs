@@ -1,0 +1,160 @@
+<%- include('partials/header') %>
+
+
+<div class="container push-top">
+<a href="javascript:history.back()" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+	<div class="row pmd-z-depth-2  top-background white-background">
+		<div class="col col-md-8 namebox">
+			<h1 class="pmd-display1">Edit Order for: <%= account.name %></h1>
+			<ul class="list-group pmd-z-depth pmd-list pmd-card-list namebox-details">
+				<li class="list-group-item">Delivery Date: <%= order.deliveryDateString %></li>
+				<li class="list-group-item">Address: <%= order.account.address %></li>
+				<li class="list-group-item">Order By: <% if (order.user) { %><%= order.user.username %><% } %></li>
+				<li class="list-group-item">Order Date: <%= moment(order.date).format("dddd, MMMM Do") %></li>
+				<li class="list-group-item">Note: <%= order.note %></li>
+			</ul>
+		</div>
+		<div class="col col-8 top-border">
+			<div id="accountMap" style="height:300px"></div>
+		</div>
+	</div>
+<div class="row pmd-z-depth-2">				
+	<span class="dropdown pmd-dropdown clearfix">
+	<button class="btn pmd-ripple-effect btn-primary dropdown-toggle btn-block" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">Options<span class="caret"></span></button>
+	    <ul aria-labelledby="dropdownMenuDivider" role="menu" class="dropdown-menu dropdown-menu-right">
+	    	<li><a href="/delivered/<%= order._id %>">Delivered</a></li>
+	        <li><a data-target="#modal" data-toggle="modal" class="" type="button">Change Delivery Date</a></li>
+	        <li role="presentation"><a href="/delete/<%= order._id %>" class="">Delete Order</a></li>
+	    </ul>
+	</span>
+</div>
+<div class="row white-background pmd-z-depth-2 top-border">
+	<div class="col col-md-4 white-background">
+		<form id="editOrder" class="form-inline" action="/update_order" method="post">
+    	<fieldset>
+		<input type="hidden" name="orderId" value="<%= order._id  %>">
+		<h3><strong><u>Order</u></strong></h3>
+		<% beer.forEach(function(el) { %>
+
+			<div class="form-group pmd-textfield">
+				<input type="hidden" name="orderItemId" value="<%= el._id %>">
+				<label class="control-label"><%= el.item.name %><%= el.item.size %></label>
+				<input type="hidden" name="order" value="<%= el.item._id %>" >
+				<input type="text" name="order" class="form-control pmd-textfield" value="<%= el.orderSize %>">
+				<br />	
+			</div>
+		<% }) %>	
+	</div>
+	<% if (!order.delivered) { %>
+	<div class="col col-md-8 white-background">
+		<p><strong><u>Add to Order</u></strong></p>
+
+			<% availableBeer.forEach(function(el) { %>
+				<% if (el.leftToSell > 0) { %>
+				<div class="form-group pmd-textfield">
+				<input type="hidden" name="orderItemId" value="<%= el.beerId %>">
+				<label class="control-label"><%= el.beerName %> <%= el.size %></label>
+				<input type="hidden" name="order" value="<%= el.beerId %>" >
+				<input type="text" name="order" class="form-control pmd-textfield" placeholder="/ <%= el.leftToSell %> Available">
+				<% } %>
+			<% }) %>	
+				</div>
+	</div>
+
+	<button type="submit" class="btn btn-block btn-primary">Submit</button>
+	<% } else { %>
+
+	<% } %>
+	</fieldset>
+	</form>	
+</div>
+
+
+</div>
+
+
+<div tabindex="-1" class="modal fade" id="modal" style="display: none;" aria-hidden="true">
+
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header pmd-modal-bordered">
+			<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+			<h2 class="pmd-card-title-text">Change Delivery Date</h2>
+		</div>
+		<div class="modal-body">
+		<form id="updateDate" class="" action="/update_date" method="post">
+			<input type="hidden" name="orderItemId" value="<%= order._id %>">
+			<p>Delivery date: <%= order.deliveryDateString %></p>
+
+			<input class="form-control" value="<%= order.deliveryDateString %>" type="date" name="deliveryDate" required>
+		</div>
+		<div class="pmd-modal-action">
+		
+		<button type="submit" class="btn">Change Delivery Date</button>
+			</form>
+		<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+		</div>
+	</div>
+</div>
+
+
+<script>
+  var map;
+  var myLatLng = { lat: <%= account.lat %>, lng: <%= account.lng %> } 
+
+  function initMap() {
+ 	// console.log(document)
+    var map = new google.maps.Map(document.getElementById('accountMap'), {
+      center: myLatLng,
+      scrollwheel: false,
+      zoom: 12
+    });
+  		
+	var marker = new google.maps.Marker({
+		position: myLatLng,
+		map: map
+	})
+
+  }
+
+</script>
+
+<!-- Floating Action Button like Google Material -->
+
+	<div class="menu pmd-floating-action"  role="navigation"> 
+		<a href="/order" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="New Order"> 
+			<span class="pmd-floating-hidden">New Order</span>
+			<i class="material-icons">local_shipping</i>
+		</a> 
+		<a href="/newbeer" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Manage Beer"> 
+			<span class="pmd-floating-hidden">Manage Beer</span> 
+			<i class="material-icons">local_drink</i> 
+		</a> 
+		<a href="/account/newaccount" class="pmd-floating-action-btn btn btn-sm pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-default" data-title="Manage Accounts"> 
+			<span class="pmd-floating-hidden">Manage Accounts</span> 
+			<i class="material-icons">supervisor_account</i>
+		</a> 
+		<a class="pmd-floating-action-btn btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" data-title="Add" href="javascript:void(0);"> 
+			<span class="pmd-floating-hidden">Primary</span>
+			<i class="material-icons pmd-sm">add</i> 
+		</a> 
+	</div>
+</div>
+	
+	<!-- jQuery before Propeller.js -->
+    <script
+	  src="https://code.jquery.com/jquery-2.2.4.min.js"
+	  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+	  crossorigin="anonymous"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script 
+	  type="text/javascript" 
+	  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascripts/propeller.min.js"></script>
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9geBohhZ3DehycMZEBqiZmo6qfDu9dEs&callback=initMap"></script>
+
+
+</body>
+</html>

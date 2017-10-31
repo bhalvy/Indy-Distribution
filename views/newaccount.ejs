@@ -1,0 +1,35 @@
+<%- include('./partials/header-accounts') %>
+
+<div class="container push-top">
+	<div class="form-group">
+		<a href="/dashboard" class="btn btn-primary back-btn"><i class="material-icons pmd-md">keyboard_arrow_left</i></a>
+
+		<div class="pmd-card pmd-z-depth top-border">
+		<div class="form-box">
+			<h1 class="pmd-display1">New Account</h1>
+			<form class="" action="/account/newaccount" method="post">
+		        <div class="form-group pmd-textfield">
+		            <label class="control-label" for="name">Name</label>
+		            <input class="form-control " name="name" type="text">
+		        </div>
+
+		        <div class="form-group pmd-textfield">
+		            <label class="control-label" for="address">Address</label>
+		            <input class="form-control" name="address" type="text">
+		        </div>
+
+		        <div class="form-group pmd-textfield">
+		            <label class="control-label" for="conact">Contact Name</label>
+		            <input class="form-control" name="primaryContactFirstName" type="text" placeholder="First Name">
+		            <input class="form-control" name="primaryContactLastName" type="text" placeholder="Last Name">
+		            <input class="form-control" name="primaryContactPhoneNumber" type="text" placeholder="Phone Number">
+		        </div>
+
+	        	<button type="submit" class="btn pmd-btn-raised btn-primary btn-block pmd-ripple-effect">Submit</button>
+			</form>
+		</div>
+		</div>
+	</div>
+</div>
+
+<%- include('./partials/footer') %>

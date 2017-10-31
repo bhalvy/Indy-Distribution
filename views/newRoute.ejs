@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid">
+	<div class="form-box pmd-z-depth-2">
+		<h1>New Route</h1>
+        <%= params %>
+		<form id="theId" class="" action="/newRoute" method="post">
+            <div class="form-group row">
+                <div class="form-input-box">
+                    <input class="form-control" name="routeName" type="text" placeholder="Name the Route">
+                    <input class="form-control" name="routeDate" type="date" value="<%= params %>" placeholder="Date">
+                    <input class="form-control" name="routeCreatedBy" type="hidden" value="<%= user._id %>">
+                </div>
+                <div class="form-input-box">
+                    <input type="radio">
+                    <label>Re-Occuring Route</label>
+    
+                    <div class="reveal-if-active form-input-box">
+                        <input class="form-control" name="reoccuringType" type="text" placeholder="Type">
+                        <input class="form-control" name="reoccuringEndDate" type="text" placeholder="End Date">
+                    </div>
+                </div>
+                
+            </div>
+        	<button type="submit" class="btn btn-primary">Submit</button>
+    		
+		</form>
+	</div>
+</div>
+
+<%- include('partials/footer') %>

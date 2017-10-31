@@ -1,0 +1,36 @@
+<div class="container dashboard pmd-z-depth">
+		<h2 class="pmd-display1">Inventory</h2>
+		<h4 class="text-muted"><a href="/inventory">Adjust Inventory</a></h4>	
+		<div class="table-responsive"> 
+			<table cellspacing="0" cellpadding="0" class="table" id="table-propeller">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Current Inventory</th>
+						<th>Undelivered</th>
+						<th>Allocated</th>
+						<th>Left to Sell</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% inventory.forEach(function(el) { %>
+					<% if (el.currentInventory > 0) { %>
+					<tr>
+						<td data-title="Beer Name"><a href="/inventory/<%= el.beerId %>"><%= el.beerName %> <%= el.size %></a></td>
+						<td data-title="Current Inventory"><a href="/inventory/<%= el.beerId %>"><%= el.currentInventory %></a></td>
+						<td data-title="Sold But Undelivered"><a href="/inventory/<%= el.beerId %>"><%= el.soldButNotDelivered %></a></td>
+						<td> -- </td>
+						<td data-title="Left to Sell">
+							<% if(el.leftToSell == 0) { %> 
+								<a href="/inventory/<%= el.beerId %>"><%= el. currentInventory %></a>
+							<% } else { %>
+								<a href="/inventory/<%= el.beerId %>"><%= el.leftToSell %></a>
+							<% } %>
+						</td>
+					</tr>
+					<% } %>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+</div>

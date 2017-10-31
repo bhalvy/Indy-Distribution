@@ -1,0 +1,35 @@
+<div class="container dashboard pmd-z-depth quick-stats">
+	<h3 class="pmd-display1">Quick Stats</h3>
+	<div class="row">
+		<div class="col-md-6">
+			<canvas id="myChart" width="800" height="600"></canvas>
+		</div>
+	</div>
+</div>
+
+<script>
+	var ctx = document.getElementById("myChart");
+	
+	var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: [<% inventory.forEach(function(inv){ %>"<%= inv.beerName %> <%= inv.size %>",<% }) %>
+      ],
+      datasets: [
+        {
+          label: "Current Stock",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: [<% inventory.forEach(function(inv){ %><% if (inv.currentInventory > 0) { %><%= inv.currentInventory %>,<% } %><% }) %>
+          ]
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Current Inventory'
+      }
+    }
+});
+
+</script>

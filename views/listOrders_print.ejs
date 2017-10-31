@@ -1,0 +1,118 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid push-top">
+	<div class="row">
+		<div class="col-12 top-border">
+			<h1><%= orders[0].deliveryDateString %></h1>
+		</div>
+	</div>
+
+
+<div tabindex="-1" class="modal fade" id="routeModal" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header pmd-modal-bordered">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+				<h2 class="pmd-card-title-text">Add Delivery Group</h2>
+			</div>
+			<div class="modal-body">
+			<form id="theId" class="" action="/newRoute" method="post">
+			    <div class="form-group">
+			        <div class="form-input-box">
+			            <input class="form-control" name="routeName" type="text" placeholder="Name the Route">
+			            <input class="form-control" name="routeDate" type="hidden" value="<%= params.date %>" placeholder="Date">
+			            <input class="form-control" name="routeCreatedBy" type="hidden" value="<%= user._id %>">
+			        </div>
+				</div>
+			</div>
+			<div class="pmd-modal-action">
+					<button type="submit" class="btn pmd-ripple-effect btn-primary">Submit</button>
+			</form>
+				<button data-dismiss="modal"  class="btn pmd-ripple-effect btn-default" type="button">Discard</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col col-md-4 white-background">
+		<h2 class="pmd-display1">Route Info</h2>
+		<ul class="list-group pmd-list">
+			<li class="list-group-item">Number of Stops: -- </li>
+			<li class="list-group-item">Mileage: -- </li>
+			<li class="list-group-item">Estimated Time: -- </li>
+		</ul>
+		<h2 class="pmd-display1">Total Load</h2>
+		<ul class="list-group pmd-list">
+			<% itemsInOrder.forEach(function(el){ %>
+			 	<li class="list-group-item"><%= el.beerName %>  <%= el.size %>: <%= el.onOrder %></li>
+			<% }) %>
+		</ul>
+	</div>
+
+	<div class="col col-md-8 white-background">
+		<h2 class="pmd-display1">Orders</h2>
+		<ul class="list-group pmd-list">
+		<form action="/assignRoute" method="post">
+			<% orders.forEach(function(el) { %>
+		    <li class="list-group-item col-3-lg">
+		        <div class="media-body">
+		            <h3 class="list-group-item-heading">
+						<%= el.account.name %></h3>
+
+		            <span class="list-group-item-text">
+						<% el.order.forEach(function(el) { %>
+							(<%= el.orderSize %>) <%= el.item.name %> <%= el.item.size %>
+						<% }) %><br />
+						<% if (el.note.length > 0) {%>
+						<%= el.note %><br />
+						<% } %>
+		            </span>	
+		        </div>
+		    </li>
+		    <% }) %>
+		</form>
+		</ul>
+		</div>
+	</div>
+</div>
+
+<script>
+  var map;
+  var orderArr = <%- JSON.stringify(orders) %>
+  var myLatLngStart = { lat: 33.727299, lng: -118.2824077 } //Brouwerij West
+
+  function initMap() {
+ 	// console.log(document)
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: myLatLngStart,
+      scrollwheel: false,
+      zoom: 9
+    });
+  		
+		orderArr.forEach(function(el){
+			var myLatLng = {lat: el.account.lat, lng: el.account.lng}
+			var marker = new google.maps.Marker({
+				position: myLatLng,
+				map: map
+			})
+    })
+
+  }
+
+</script>
+
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<script 
+  type="text/javascript" 
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="javascripts/propeller.min.js"></script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9geBohhZ3DehycMZEBqiZmo6qfDu9dEs&callback=initMap"></script>
+	</body>
+</html>
