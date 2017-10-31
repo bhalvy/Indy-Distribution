@@ -10,7 +10,7 @@ A simple web app to manage inventory, take orders, plan routes, and deliver item
 ### Installation
 clone this repository
 ```
-git clone https://github.com/bhalvy/delivbeer
+git clone https://github.com/bhalvy/Indy-Distribution
 ```
 
 Install npm packages
